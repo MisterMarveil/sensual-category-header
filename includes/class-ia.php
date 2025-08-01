@@ -15,14 +15,108 @@ class SCH_IA {
             "Tu es un expert en marketing sensuel. Rédige une description HTML engageante et élégante pour une boutique de lingerie fine/sexshop. Utilise un ton séduisant et poétique. La catégorie est : \"%s\". Évoque des sensations, les formes, le désir, et les occasions idéales pour ces produits, sans jamais être vulgaire.",
             esc_html( $cat_name )
         );
-        $res  = self::call_ia( $provider, $key, $prompt );
+
+        if($provider != 'chatgpt'){
+            $res = self::deepseek_r1_request($prompt, $key);
+        }else{
+            $res  = self::call_ia( $provider, $key, $prompt );
+        }
+
+        if (is_wp_error($res)) {
+            // Handle error
+            $res = 'DeepSeek API Error: ' . $res->get_error_message();
+        }
+
+        
         $desc = wp_kses_post( $res );
         $wpdb->insert( $table, [ 'category_id' => $cat_id, 'description_html' => $desc ], [ '%d', '%s' ] );
         return $desc;
     }
+
+    /**
+     * Send a prompt to DeepSeek R1 model and get the response
+     * 
+     * @param string $prompt The input prompt to send to DeepSeek
+     * @param array $options Optional parameters for the API request
+     * @return string|WP_Error The response from DeepSeek or WP_Error on failure
+     */
+    private static function deepseek_r1_request($prompt, $api_key, $options = array()) {
+        if (empty($api_key)) {
+            return new WP_Error('no_api_key', __('DeepSeek API key is not set.', 'sensual-category-header'));
+        }
+
+        // Set default options        
+        $defaults = array(
+            'max_tokens' => 2048,
+            'temperature' => 0.7,
+            'stream' => false,
+        );
+        
+        $options = wp_parse_args($options, $defaults);
+        
+        // Prepare the API endpoint
+        $api_url = 'https://api.deepseek.com/v1/chat/completions';
+        
+        // Prepare the request body
+        $request_body = array(
+            'model' => 'deepseek-r1',
+            'messages' => array(
+                array(
+                    'role' => 'user',
+                    'content' => $prompt
+                )
+            ),
+            'max_tokens' => $options['max_tokens'],
+            'temperature' => $options['temperature'],
+            'stream' => $options['stream'],
+        );
+        
+        
+        
+        
+        // Prepare the request arguments
+        $args = array(
+            'body' => json_encode($request_body),
+            'headers' => array(
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer ' . $api_key,
+            ),
+            'timeout' => 30, // 30 seconds timeout
+        );
+        
+        // Make the POST request
+        $response = wp_remote_post($api_url, $args);
+        
+        // Check for errors
+        if (is_wp_error($response)) {
+            return $response;
+        }
+        
+        $response_code = wp_remote_retrieve_response_code($response);
+        $response_body = wp_remote_retrieve_body($response);
+        
+        if ($response_code != 200) {
+            return new WP_Error('api_error', sprintf(__('API request failed with status code %d', 'your-plugin-textdomain'), $response_code), $response_body);
+        }
+        
+        // Decode the JSON response
+        $data = json_decode($response_body, true);
+        
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return new WP_Error('json_error', __('Failed to decode API response', 'your-plugin-textdomain'));
+        }
+        
+        // Extract and return the content
+        if (isset($data['choices'][0]['message']['content'])) {
+            return trim($data['choices'][0]['message']['content']);
+        }
+        
+        return new WP_Error('no_content', __('No content received from API', 'your-plugin-textdomain'));
+    }
+
     private static function call_ia( $provider, $key, $prompt ) {
         $url = ( 'deepseek' === $provider )
-            ? 'https://api.deepseek.ai/generate'
+            ? 'https://api.deepseek.com/chat/completions'
             : 'https://api.openai.com/v1/chat/completions';
         $body = ( 'deepseek' === $provider )
             ? wp_json_encode( [ 'prompt' => $prompt, 'model' => 'ds-sensual' ] )
