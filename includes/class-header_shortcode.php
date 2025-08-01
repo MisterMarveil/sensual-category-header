@@ -18,10 +18,13 @@ class SCH_Header_Shortcode {
     public function render_header( $atts ) {
         $cat = self::$instance->get_category_info();
         if ($cat === false || !$cat ) {
+            echo "<b>pas de cat</b>";
             return '';
         }
         
         $html = SCH_IA::get_category_description( $cat->term_id, $cat->name );
+        if(empty($html))
+            $html = "<strong>Oops! empty html</strong>";
         ob_start();
         include SCH_PATH . 'templates/header-block.php';
         return ob_get_clean();
