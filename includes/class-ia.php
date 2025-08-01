@@ -36,7 +36,7 @@ class SCH_IA {
             'timeout' => 20,
         ] );
         if ( is_wp_error( $response ) ) {
-            return '<p>' . esc_html__( 'Erreur de génération IA.', 'sensual-category-header' ) . '</p>';
+            return '<p>' . esc_html__( 'Erreur de génération IA. Details: '.$response->get_error_message(), 'sensual-category-header' ) . '</p>';
         }
         $data = json_decode( wp_remote_retrieve_body( $response ), true );
         if ( 'deepseek' === $provider ) {
