@@ -51,7 +51,6 @@ class SCH_IA {
             'temperature' => 1,
             'stream' => false,
         );
-        
         $options = wp_parse_args($options, $defaults);
         
         // Prepare the API endpoint
@@ -74,9 +73,6 @@ class SCH_IA {
             'temperature' => $options['temperature'],
             'stream' => $options['stream'],
         );
-        
-        
-        
         
         // Prepare the request arguments
         $args = array(
@@ -120,7 +116,7 @@ class SCH_IA {
 
     private static function call_ia( $provider, $key, $prompt ) {
         $url = ( 'deepseek' === $provider )
-            ? 'https://api.deepseek.com/chat/completions'
+            ? 'https://api.deepseek.com/v1/chat/completions'
             : 'https://api.openai.com/v1/chat/completions';
         $body = ( 'deepseek' === $provider )
             ? wp_json_encode( [ 'prompt' => $prompt, 'model' => 'ds-sensual' ] )
