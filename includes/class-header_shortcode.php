@@ -17,11 +17,8 @@ class SCH_Header_Shortcode {
 
     public function render_header( $atts ) {
 
-        echo "<h1>HEADER<h1>";
-
         $cat = self::$instance->get_category_info();
         if ($cat === false || !$cat ) {
-            echo "<b>pas de cat</b>";
             return '';
         }
         

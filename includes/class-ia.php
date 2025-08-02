@@ -13,7 +13,7 @@ class SCH_IA {
         $provider = $opts['ia_provider'] ?? 'chatgpt';
         $key      = $opts['api_key'] ?? '';
         $prompt   = sprintf(
-            "Rédige une description HTML engageante et élégante pour une boutique de lingerie fine/sexshop en français. Utilise un ton séduisant et poétique. La catégorie est : \"%s\". Évoque des sensations, les formes, le désir, et les occasions idéales pour ces produits, sans jamais être vulgaire. Prière de clairement délimité la partie html de la description fournie par ---START HTML--- et ---END HTML--- ensuite le css proposée par ---START CSS--- et ---END CSS---",            
+            "Rédige une description HTML  en français. La catégorie a décrire est : \"%s\". Évoque des sensations, les formes, le désir, et les occasions idéales pour ces produits, sans jamais être vulgaire. Prière de clairement délimité la partie html de la description fournie par ---START HTML--- et ---END HTML--- ensuite le css proposée par ---START CSS--- et ---END CSS---",            
             esc_html( $cat_name )
         );
 
@@ -47,7 +47,7 @@ class SCH_IA {
 
         // Set default options        
         $defaults = array(
-            'max_tokens' => 2048,
+            'max_tokens' => 1048,
             'temperature' => 1,
             'stream' => false,
         );
@@ -62,8 +62,8 @@ class SCH_IA {
             'model' => 'deepseek-reasoner',
             'messages' => array(
                 array(
-                     "role" => "system",
-                    "content" => "You are a skilled copywriter for 'LuxeDesire', an upscale online boutique offering premium lingerie and intimate lifestyle products. Your tone should be **sophisticated, inclusive, and subtly sensual**—emphasizing **comfort, confidence, and empowerment**. Avoid explicit language; instead, use tasteful euphemisms (e.g., 'toys for pleasure' instead of graphic terms). Highlight craftsmanship, fit, and discretion in shipping. Respond in concise, engaging copy suitable for emails, product descriptions, and social media..",
+                    "role" => "system",
+                    "content" => "Vous êtes le/la copywriter attitré·e de « JardinSucre », une boutique en ligne haut de gamme spécialisée dans la lingerie fine, les sextoys et les accessoires de bien-être intime. À chaque catégorie de produits que nous fournissons, vous concevez un texte de présentation marketing captivant, placé en tête de page pour introduire l’univers et l’atmosphère de la sélection. Votre style se veut toujours séducteur, poétique et inclusif, teinté de sensualité subtile. Mettez en avant le confort, la confiance en soi et l’émancipation, tout en restant élégant·e et pudique : privilégiez les euphémismes raffinés (par exemple « accessoires de plaisir »), sans tomber dans la vulgarité. Soulignez la qualité, l’ajustement parfait et la discrétion de nos livraisons. Vos réponses doivent rester concises, engageantes et parfaitement adaptées à un en-tête de page produit, à une fiche descriptive ou à un post sur les réseaux sociaux."
                 ),
                 array(
                     'role' => 'user',
