@@ -8,11 +8,12 @@ class SCH_IA {
         if ( $row ) {
             return $row->description_html;
         }
+        
         $opts     = get_option( 'sch_plugin_options', [] );
         $provider = $opts['ia_provider'] ?? 'chatgpt';
         $key      = $opts['api_key'] ?? '';
         $prompt   = sprintf(
-            "Tu es un expert en marketing sensuel. Rédige une description HTML engageante et élégante pour une boutique de lingerie fine/sexshop. Utilise un ton séduisant et poétique. La catégorie est : \"%s\". Évoque des sensations, les formes, le désir, et les occasions idéales pour ces produits, sans jamais être vulgaire.",
+            "Rédige une description HTML engageante et élégante pour une boutique de lingerie fine/sexshop en français. Utilise un ton séduisant et poétique. La catégorie est : \"%s\". Évoque des sensations, les formes, le désir, et les occasions idéales pour ces produits, sans jamais être vulgaire. Prière de clairement délimité la partie html de la description fournie par ---START HTML--- et ---END HTML--- ensuite le css proposée par ---START CSS--- et ---END CSS---",            
             esc_html( $cat_name )
         );
 
@@ -26,7 +27,6 @@ class SCH_IA {
             // Handle error
             $res = 'DeepSeek API Error: ' . $res->get_error_message();
         }
-
         
         $desc = wp_kses_post( $res );
         $wpdb->insert( $table, [ 'category_id' => $cat_id, 'description_html' => $desc ], [ '%d', '%s' ] );
@@ -48,7 +48,7 @@ class SCH_IA {
         // Set default options        
         $defaults = array(
             'max_tokens' => 2048,
-            'temperature' => 0.7,
+            'temperature' => 1,
             'stream' => false,
         );
         
@@ -59,8 +59,12 @@ class SCH_IA {
         
         // Prepare the request body
         $request_body = array(
-            'model' => 'deepseek-r1',
+            'model' => 'deepseek-reasoner',
             'messages' => array(
+                array(
+                     "role" => "system",
+                    "content" => "You are a skilled copywriter for 'LuxeDesire', an upscale online boutique offering premium lingerie and intimate lifestyle products. Your tone should be **sophisticated, inclusive, and subtly sensual**—emphasizing **comfort, confidence, and empowerment**. Avoid explicit language; instead, use tasteful euphemisms (e.g., 'toys for pleasure' instead of graphic terms). Highlight craftsmanship, fit, and discretion in shipping. Respond in concise, engaging copy suitable for emails, product descriptions, and social media..",
+                ),
                 array(
                     'role' => 'user',
                     'content' => $prompt

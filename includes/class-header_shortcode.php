@@ -18,19 +18,41 @@ class SCH_Header_Shortcode {
     public function render_header( $atts ) {
 
         echo "<h1>HEADER<h1>";
-        
+
         $cat = self::$instance->get_category_info();
         if ($cat === false || !$cat ) {
             echo "<b>pas de cat</b>";
             return '';
         }
         
-        $html = SCH_IA::get_category_description( $cat->term_id, $cat->name );
-        if(empty($html))
+        $raw = SCH_IA::get_category_description( $cat->term_id, $cat->name );        
+        if(empty($raw)){
             $html = "<strong>Oops! empty html</strong>";
+            $css = "";
+        }else{
+            $html = self::$instance->extractDescHtml($raw);
+            $css = self::$instance->extractDescCss($raw);
+        }
+
         ob_start();
         include SCH_PATH . 'templates/header-block.php';
         return ob_get_clean();
+    }
+
+    private function extractDescHtml($raw){    
+        if ( preg_match( '/---START HTML---(.*?)---END HTML---/s', $raw, $html_match ) ) {
+            return trim( $html_match[1] );
+        } else {
+            return '<!-- HTML not found in AI response -->';
+        }    
+    }
+    
+    private function extractDescCss($raw){            
+        if ( preg_match( '/---START CSS---(.*?)---END CSS---/s', $raw, $css_match ) ) {
+            return trim( $css_match[1] );
+        } else {
+            return '/* CSS not found in AI response */';
+        }
     }
 
     public function render_all_widgets( $cat ) {
