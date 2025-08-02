@@ -8,7 +8,7 @@ class SCH_IA {
         if ( $row ) {
             return $row->description_html;
         }
-        
+
         $opts     = get_option( 'sch_plugin_options', [] );
         $provider = $opts['ia_provider'] ?? 'chatgpt';
         $key      = $opts['api_key'] ?? '';
@@ -85,7 +85,7 @@ class SCH_IA {
                 'Content-Type' => 'application/json',
                 'Authorization' => 'Bearer ' . $api_key,
             ),
-            'timeout' => 30, // 30 seconds timeout
+            'timeout' => 220, // 30 seconds timeout
         );
         
         // Make the POST request
