@@ -211,7 +211,7 @@
 .read-more-toggle {
     display: inline-block;
     margin: 8px 0 0 0; /* Réduction de la marge supérieure */
-    color: #ff6b9c;
+    color: #D20895;
     font-weight: 600;
     cursor: pointer;
     text-decoration: none;
@@ -241,8 +241,8 @@
 /* Option : Bouton aligné à droite */
 .read-more-toggle.align-right {
     position: absolute;
-    right: 0;
-    bottom: 0;
+    right: -50px;
+    bottom: 25px;
 }
 
 /* Option : Bouton centré sous le texte */
