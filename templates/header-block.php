@@ -26,10 +26,10 @@
 <div class="sch-product-filters">
     <h3>Filtrer les produits</h3>
     <?php 
-    if (shortcode_exists('woof')) {
-        echo do_shortcode('[woof]');
+    if (shortcode_exists('wpf-filters')) {
+        echo do_shortcode('[wpf-filters id=1]');
     } else {
-        echo '<p>Installez le plugin WOOF pour les filtres</p>';
+        echo '<p>Installez le plugin WOOCOMMERCE PRODUCT FILTER BY WBF pour les filtres</p>';
     }
     ?>
 </div>
