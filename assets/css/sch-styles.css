@@ -326,6 +326,8 @@
 .subcategory-button:hover {
     background:  #D20895;
     color: #fff;
+    font-weight: bold;
+    font-size: 0.80em;
     transform: translateY(-3px);
     box-shadow: 0 5px 15px  #D20895;
     border-color:  #D20895;
