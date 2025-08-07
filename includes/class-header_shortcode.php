@@ -37,6 +37,16 @@ class SCH_Header_Shortcode {
             $css = self::$instance->extractDescCss($raw);
         }
 
+         // Récupérer les sous-catégories
+        $subcategories = [];
+        if ($cat) {
+            $subcategories = get_terms([
+                'taxonomy' => 'product_cat',
+                'hide_empty' => true,
+                'parent' => $cat->term_id
+            ]);
+        }
+
         ob_start();
         include SCH_PATH . 'templates/header-block.php';
         return ob_get_clean();

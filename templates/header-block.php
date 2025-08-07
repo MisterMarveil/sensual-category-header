@@ -5,6 +5,23 @@
     <?php echo wp_strip_all_tags( $css ); ?>
 </style>
 <?php echo $html; ?>
+<?php if (!empty($subcategories)) : ?>
+<div class="subcategories-card">
+    <h3 class="subcategories-title">Découvrez nos collections</h3>
+    <div class="subcategories-grid">
+        <?php foreach ($subcategories as $subcat) : 
+            $url = add_query_arg([
+                'wpf_filter_cat_list_0s' => $subcat->slug,
+                'wpf_fbv' => 1
+            ], get_permalink( wc_get_page_id( 'shop' ) ));
+        ?>
+            <a href="<?php echo esc_url($url); ?>" class="subcategory-button">
+                <?php echo esc_html($subcat->name); ?>
+            </a>
+        <?php endforeach; ?>
+    </div>
+</div>
+<?php endif; ?>
 <!--div class="sch-header-block">
     <div class="description-content"><?php //echo $html; ?></div>
     <div class="filter-widgets"><?php //do_action( 'sch_render_widgets', get_queried_object() ); ?></div>
