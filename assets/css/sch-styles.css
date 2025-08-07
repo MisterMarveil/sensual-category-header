@@ -1,12 +1,13 @@
 /* Bloc principal */
 .sensual-header-container {
-    background: linear-gradient(to right, #1a1a1a, #333);
-    color: #fff;
+    background: #FFf;
+    color: #2c2c2c;
     padding: 30px;
     margin-bottom: 40px;
     border-radius: 8px;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
+    background: linear-gradient(to right, #fff, #fcecf7);
 }
 
 .sensual-description {

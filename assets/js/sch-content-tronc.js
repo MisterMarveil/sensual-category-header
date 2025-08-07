@@ -66,8 +66,8 @@ document.addEventListener('DOMContentLoaded', function() {
         function createToggleButton() {
             const button = document.createElement('a');
             button.href = '#';
-            button.className = 'read-more-toggle align-right';
-            button.textContent = 'Lire plus';
+            button.className = 'read-more-toggle align-left';
+            button.textContent = 'Lire plus >>';
             button.style.marginTop = '0px';
             
             button.addEventListener('click', function(e) {
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 if (isTruncated) {
                     description.innerHTML = fullText;
-                    button.textContent = 'Lire moins';
+                    button.textContent = '<< Lire moins';
                     isTruncated = false;
                     
                     // Faire défiler légèrement vers le haut pour une meilleure UX
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     description.classList.remove('truncated');                    
                 } else {
                     description.innerHTML = truncatedHtml;
-                    button.textContent = 'Lire plus';
+                    button.textContent = 'Lire plus >>';
                     isTruncated = true;
                     description.classList.add('truncated');
                 }
