@@ -2,7 +2,7 @@
     .sch-header-block { padding:20px; background:#f9f0f5; border-radius:10px; margin-bottom:30px; }
     .description-content { font-size:1.1em; line-height:1.5; }
     .filter-widgets { display:flex; flex-wrap:wrap; gap:10px; margin-top:20px; }     
-    <?php echo wp_strip_all_tags( $css ); ?>
+    <?php //echo wp_strip_all_tags( $css ); ?>
 </style>
 <?php echo $html; ?>
 <?php if (!empty($subcategories)) : ?>
