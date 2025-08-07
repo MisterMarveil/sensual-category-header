@@ -24,7 +24,7 @@
 <?php endif; ?>
 <!-- Nouvelle section pour les filtres -->
 <div class="sch-product-filters">
-    <h3>Filtrer les produits</h3>
+    <h3>Affinons notre recherche...</h3>
     <?php 
     if (shortcode_exists('wpf-filters')) {
         echo do_shortcode('[wpf-filters id=1]');
