@@ -75,19 +75,19 @@ class SCH_Admin {
     }
 
     public function enqueue_admin_assets($hook) {
+        echo "HOOK:".$hook."\n\n\n";
     if ($hook === 'sensual-category-header_page_sch-manage-descriptions') {
-        wp_enqueue_style(
-            'sch-admin-styles',
-            plugins_url('../assets/css/sch-admin-styles.css', __FILE__)
-        );
+        wp_register_style('sch-admin-styles', plugins_url('../assets/css/sch-admin-styles.css', __FILE__));
+        wp_enqueue_style('sch-admin-styles');
         
-        wp_enqueue_script(
+        wp_register_script(
             'sch-manage-descriptions',
             plugins_url('../assets/js/admin-manage-descriptions.js', __FILE__),
             ['jquery'],
             '1.0',
             true
-        );
+        );        
+        wp_enqueue_script('sch-manage-descriptions');
         
         wp_localize_script('sch-manage-descriptions', 'sch_admin_params', [
             'ajax_url' => admin_url('admin-ajax.php'),
