@@ -2,32 +2,60 @@ jQuery(document).ready(function($) {
     // Configuration
     const ajaxurl = sch_admin_params.ajax_url;
     const nonce = sch_admin_params.nonce;
+    let searchTimer = null;
+    const $searchResults = $('#search-results');
+    const $editorSection = $('#editor-section');
+    const $editorLoader = $('.editor-loader');
+    const $descriptionEditor = $('#description-editor');
+    const $editorActions = $('.editor-actions');
+    const $categorySearch = $('#category-search');
     
-    // Recherche AJAX
-    $('#category-search').on('input', function() {
+    
+    // Recherche AJAX avec délai
+    $categorySearch.on('input', function() {
+        // Réinitialiser l'éditeur si une recherche est relancée
+        if ($editorSection.is(':visible')) {
+            $editorSection.slideUp();
+            $descriptionEditor.val('');
+        }
+        
         const searchTerm = $(this).val().trim();
         
+        // Clear previous timer
+        clearTimeout(searchTimer);
+        
+        // Hide results while typing
+        $searchResults.hide();
+        
         if (searchTerm.length < 2) {
-            $('#search-results').empty().hide();
+            $searchResults.empty();
             return;
         }
         
-        $.get(ajaxurl, {
-            action: 'sch_search_categories',
-            term: searchTerm,
-            security: nonce
-        }, function(response) {
-            if (response.results && response.results.length) {
-                let html = '<ul class="sch-search-results">';
-                response.results.forEach(item => {
-                    html += `<li data-id="${item.id}">${item.text}</li>`;
-                });
-                html += '</ul>';
-                $('#search-results').html(html).show();
-            } else {
-                $('#search-results').html('<p>Aucun résultat</p>').show();
-            }
-        });
+        // Show loading indicator
+        $searchResults.html('<div class="sch-loader"></div>').show();
+        
+        // Set new timer
+        searchTimer = setTimeout(() => {
+            $.get(ajaxurl, {
+                action: 'sch_search_categories',
+                term: searchTerm,
+                security: nonce
+            }, function(response) {
+                if (response.results && response.results.length) {
+                    let html = '<ul class="sch-search-results">';
+                    response.results.forEach(item => {
+                        html += `<li data-id="${item.id}">${item.text}</li>`;
+                    });
+                    html += '</ul>';
+                    $searchResults.html(html).show();
+                } else {
+                    $searchResults.html('<div class="sch-no-results">Aucune catégorie ne correspond au terme de recherche</div>').show();
+                }
+            }).fail(function() {
+                $searchResults.html('<div class="sch-error">Erreur de recherche. Veuillez réessayer.</div>').show();
+            });
+        }, 400); // 400ms delay
     });
     
     // Sélection d'un résultat
@@ -35,6 +63,17 @@ jQuery(document).ready(function($) {
         const categoryId = $(this).data('id');
         const categoryName = $(this).text();
         
+        // Masquer les résultats et réinitialiser le champ
+        $searchResults.hide().empty();
+        $categorySearch.val('');
+        
+        // Afficher le loader dans l'éditeur
+        $editorSection.show();
+        $descriptionEditor.hide();
+        $editorActions.hide();
+        $editorLoader.show();
+        
+        // Mettre à jour les champs
         $('#selected-category-id').val(categoryId);
         $('#selected-category-name').text(categoryName);
         
@@ -45,16 +84,30 @@ jQuery(document).ready(function($) {
             security: nonce
         }, function(response) {
             if (response.success) {
-                $('#description-editor').val(response.data.description);
-                $('#editor-section').slideDown();
+                $descriptionEditor.val(response.data.description);
+                
+                // Cacher loader, afficher contenu
+                setTimeout(() => {
+                    $editorLoader.hide();
+                    $descriptionEditor.show();
+                    $editorActions.show();
+                }, 300);
             }
+        }).fail(function() {
+            $editorLoader.hide();
+            $descriptionEditor.show().val('Erreur lors du chargement de la description');
+            $editorActions.show();
         });
     });
     
     // Sauvegarde
     $('#save-description').click(function() {
+        const $button = $(this);
+        const originalText = $button.text();
         const categoryId = $('#selected-category-id').val();
         const description = $('#description-editor').val();
+        
+        $button.text('Enregistrement...').prop('disabled', true);
         
         $.post(ajaxurl, {
             action: 'sch_save_description',
@@ -65,14 +118,20 @@ jQuery(document).ready(function($) {
             showFeedback(response.data.message, 'success');
         }).fail(function() {
             showFeedback('Erreur serveur', 'error');
+        }).always(function() {
+            $button.text(originalText).prop('disabled', false);
         });
     });
     
     // Suppression
     $('#delete-description').click(function() {
-        if (!confirm('Supprimer définitivement cette description?')) return;
+        if (!confirm('Êtes-vous sûr de vouloir supprimer définitivement cette description?')) return;
         
+        const $button = $(this);
+        const originalText = $button.text();
         const categoryId = $('#selected-category-id').val();
+        
+        $button.text('Suppression...').prop('disabled', true);
         
         $.post(ajaxurl, {
             action: 'sch_delete_description',
@@ -81,16 +140,30 @@ jQuery(document).ready(function($) {
         }, function(response) {
             if (response.success) {
                 showFeedback(response.data.message, 'success');
-                $('#description-editor').val('');
-                setTimeout(() => $('#editor-section').slideUp(), 1500);
+                $descriptionEditor.val('');
+                setTimeout(() => {
+                    $editorSection.slideUp();
+                    $button.text(originalText).prop('disabled', false);
+                }, 1500);
             }
+        }).fail(function() {
+            showFeedback('Erreur serveur', 'error');
+            $button.text(originalText).prop('disabled', false);
         });
     });
     
-    // Affichage des feedbacks
+     // Affichage des feedbacks
     function showFeedback(message, type) {
         const $feedback = $('#action-feedback');
         $feedback.text(message).removeClass('success error').addClass(type).show();
         setTimeout(() => $feedback.fadeOut(), 3000);
     }
+    
+    // Réinitialisation de la recherche
+    $('#reset-search').click(function() {
+        $categorySearch.val('');
+        $searchResults.hide().empty();
+        $editorSection.slideUp();
+        $descriptionEditor.val('');
+    });
 });

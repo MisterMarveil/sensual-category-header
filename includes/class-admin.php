@@ -55,24 +55,35 @@ class SCH_Admin {
             <div id="sch-description-management">
                 <div class="search-section">
                     <label for="category-search">Rechercher une catégorie :</label>
-                    <input type="text" id="category-search" placeholder="Commencez à taper...">
+                    <input type="text" id="category-search" placeholder="Commencez à taper le nom...">
                     <div id="search-results"></div>
+                    
+                    <div class="search-controls">
+                        <button id="reset-search" class="button">
+                            Réinitialiser
+                        </button>
+                    </div>
                 </div>
                 
                 <div id="editor-section" style="display:none;">
                     <input type="hidden" id="selected-category-id">
                     <h2 id="selected-category-name"></h2>
-                    <textarea id="description-editor" rows="15" style="width:100%;"></textarea>
-                    <div class="editor-actions">
-                        <button id="save-description" class="button button-primary">Enregistrer</button>
-                        <button id="delete-description" class="button button-danger">Supprimer</button>
+                    <div class="editor-loader" style="display:none;"></div>
+                    <textarea id="description-editor" rows="15" style="width:100%; display:none;"></textarea>
+                    <div class="editor-actions" style="display:none;">
+                        <button id="save-description" class="button button-primary">
+                            Enregistrer les modifications
+                        </button>
+                        <button id="delete-description" class="button button-danger">
+                            Supprimer la description
+                        </button>
                         <span id="action-feedback"></span>
                     </div>
                 </div>
             </div>
         </div>
         <?php
-    }
+    }    
 
     public function enqueue_admin_assets($hook) {        
     if ($hook === 'sensual-header_page_sch-manage-descriptions') {        
