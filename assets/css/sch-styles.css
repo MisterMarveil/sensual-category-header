@@ -264,7 +264,7 @@
 
 /* Sous-catégories */
 .subcategories-card {
-    background: rgba(255, 255, 255, 0.1);
+    background: #f8f8f8;
     padding: 25px;
     border-radius: 12px;
     margin: 30px 0;
@@ -277,7 +277,7 @@
     font-size: 1.4rem;
     margin-top: 0;
     margin-bottom: 25px;
-    color: #fff;
+    color: #2c2c2c;
     font-family: 'Playfair Display', serif;
     text-shadow: 0 2px 4px rgba(0,0,0,0.3);
     position: relative;
@@ -304,28 +304,31 @@
 
 .subcategory-button {
     display: block;
-    padding: 14px 10px;
-    background: rgba(255, 255, 255, 0.08);
-    color: #fff;
-    text-align: center;
+    padding: 0px 10px;
+    background: #f2f3f6;
+    color: #31364b;
+    /* text-align: center; */
     border-radius: 50px;
-    text-decoration: none;
+    /* text-decoration: none; */
     transition: all 0.3s ease;
-    font-weight: 500;
+    font-weight: 400;
     letter-spacing: 0.5px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid #c2c6c7;
     backdrop-filter: blur(4px);
     font-size: 0.95rem;
     overflow: hidden;
     position: relative;
-    z-index: 1;
+    text-transform: uppercase;
+    width: revert;
+    text-align: center;
 }
 
 .subcategory-button:hover {
-    background: rgba(210, 8, 149, 0.3);
+    background:  #D20895;
+    color: #fff;
     transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(210, 8, 149, 0.4);
-    border-color: rgba(210, 8, 149, 0.5);
+    box-shadow: 0 5px 15px  #D20895;
+    border-color:  #D20895;
 }
 
 .subcategory-button:before {
