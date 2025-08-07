@@ -196,7 +196,7 @@
 .read-more-toggle {
     display: inline-block;
     margin-top: 15px;
-    color: #ff6b9c !important;
+    color: #D20895 !important;    
     font-weight: bold;
     cursor: pointer;
     text-decoration: underline;
@@ -366,5 +366,45 @@
 @media (max-width: 480px) {
     .subcategories-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+/* Nouveaux styles pour la section de filtres */
+.sch-product-filters {
+    margin-top: 40px;
+    padding: 25px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+    border: 1px solid #eee;
+}
+
+.sch-product-filters h3 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+    color: #D20895;
+    font-family: 'Playfair Display', serif;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.sch-product-filters h3:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(to right, transparent, #D20895, transparent);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .sch-product-filters {
+        padding: 15px;
     }
 }

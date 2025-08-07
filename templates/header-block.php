@@ -22,6 +22,17 @@
     </div>
 </div>
 <?php endif; ?>
+<!-- Nouvelle section pour les filtres -->
+<div class="sch-product-filters">
+    <h3>Filtrer les produits</h3>
+    <?php 
+    if (shortcode_exists('woof')) {
+        echo do_shortcode('[woof]');
+    } else {
+        echo '<p>Installez le plugin WOOF pour les filtres</p>';
+    }
+    ?>
+</div>
 <!--div class="sch-header-block">
     <div class="description-content"><?php //echo $html; ?></div>
     <div class="filter-widgets"><?php //do_action( 'sch_render_widgets', get_queried_object() ); ?></div>
