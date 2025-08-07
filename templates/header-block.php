@@ -7,7 +7,7 @@
 <?php echo $html; ?>
 <?php if (!empty($subcategories)) : ?>
 <div class="subcategories-card">
-    <h3 class="subcategories-title">Découvrez nos collections</h3>
+    <h3 class="subcategories-title">Découvrez nos collections de <?php echo $cat->name ?></h3>
     <div class="subcategories-grid">
         <?php foreach ($subcategories as $subcat) : 
             $url = add_query_arg([
