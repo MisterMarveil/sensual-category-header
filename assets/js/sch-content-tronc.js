@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Paramètres configurables
         const wordLimit = 60; // Nombre de mots avant troncature
         const fullText = description.innerHTML;
+        var truncatedHtml = "";
         let isTruncated = true;
         
         // Fonction pour compter les mots dans un texte HTML
@@ -65,17 +66,9 @@ document.addEventListener('DOMContentLoaded', function() {
         function createToggleButton() {
             const button = document.createElement('a');
             button.href = '#';
-            button.className = 'read-more-toggle';
+            button.className = 'read-more-toggle align-right';
             button.textContent = 'Lire plus';
-            button.style.cssText = `
-                display: inline-block;
-                margin-top: 15px;
-                color: #ff6b9c;
-                font-weight: bold;
-                cursor: pointer;
-                text-decoration: underline;
-                font-size: 0.9em;
-            `;
+            button.style.marginTop = '0px';
             
             button.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -87,10 +80,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     // Faire défiler légèrement vers le haut pour une meilleure UX
                     description.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    description.classList.remove('truncated');                    
                 } else {
                     description.innerHTML = truncatedHtml;
                     button.textContent = 'Lire plus';
                     isTruncated = true;
+                    description.classList.add('truncated');
                 }
                 
                 // Réinsérer le bouton après la mise à jour
@@ -103,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Vérifier si la troncature est nécessaire
         const totalWords = countWords(fullText);
         if (totalWords > wordLimit) {
-            const truncatedHtml = truncateHtml(fullText, wordLimit);
+            truncatedHtml = truncateHtml(fullText, wordLimit);
             description.innerHTML = truncatedHtml;
             
             // Ajouter le bouton
