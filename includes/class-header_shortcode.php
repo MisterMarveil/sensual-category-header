@@ -11,7 +11,7 @@ class SCH_Header_Shortcode {
     }
 
     private function init() {
-        wp_register_style('sensual-header-style', plugins_url('assets/css/sch-styles.css', __FILE__));
+        wp_register_style('sensual-header-style', plugins_url('../assets/css/sch-styles.css', __FILE__));
         wp_enqueue_style('sensual-header-style');
 
         add_shortcode( 'category_header', [ $this, 'render_header' ] );
