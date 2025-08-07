@@ -14,6 +14,9 @@ class SCH_Header_Shortcode {
         wp_register_style('sensual-header-style', plugins_url('../assets/css/sch-styles.css', __FILE__));
         wp_enqueue_style('sensual-header-style');
 
+        wp_register_script('sensual-header-script', plugins_url('../assets/js/sch-content-tronc.js', __FILE__));
+        wp_enqueue_script('sensual-header-script');
+
         add_shortcode( 'category_header', [ $this, 'render_header' ] );
         add_action( 'sch_render_widgets', [ $this, 'render_all_widgets' ] );
     }

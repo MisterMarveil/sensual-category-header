@@ -17,9 +17,13 @@
     text-shadow: 0 1px 2px rgba(0,0,0,0.5);
 }
 
+.sensual-description > h1 {
+    font-size: 1.6em;
+}
+
 .sensual-description em {
     font-style: italic;
-    color: #ff6b9c;
+    color: #D20895;
 }
 
 /* Marketing Cards */
@@ -180,4 +184,26 @@
 .editor-pick-button:hover {
     background: #c2185b;
     transform: translateY(-2px);
+}
+
+/* Animation pour l'expansion du texte */
+.sensual-description {
+    transition: height 0.3s ease;
+}
+
+/* Style du bouton */
+.read-more-toggle {
+    display: inline-block;
+    margin-top: 15px;
+    color: #ff6b9c !important;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 0.9em;
+    transition: all 0.2s ease;
+}
+
+.read-more-toggle:hover {
+    color: #e91e63 !important;
+    text-decoration: none;
 }
