@@ -188,12 +188,21 @@ class SCH_Admin {
         $results = [];
         
         if (!empty($search)) {
-            $terms = get_terms([
-                'taxonomy'   => 'product_cat',
-                'name__like' => $search,
-                'number'     => 10,
-                'hide_empty' => false,
-            ]);
+            $table = $wpdb->prefix . 'sensual_category_descriptions';
+            
+            // Requête SQL pour récupérer uniquement les catégories avec des descriptions
+            $query = $wpdb->prepare(
+                "SELECT t.term_id, t.name 
+                FROM {$wpdb->terms} t
+                INNER JOIN {$wpdb->term_taxonomy} tt ON t.term_id = tt.term_id
+                INNER JOIN {$table} scd ON t.term_id = scd.category_id
+                WHERE tt.taxonomy = 'product_cat'
+                AND t.name LIKE %s
+                LIMIT 10",
+                '%' . $wpdb->esc_like($search) . '%'
+            );
+            
+            $terms = $wpdb->get_results($query);
             
             foreach ($terms as $term) {
                 $results[] = [
@@ -205,7 +214,7 @@ class SCH_Admin {
         
         wp_send_json(['results' => $results]);
     }
-
+    
     public function ajax_get_description() {
         check_ajax_referer('sch_manage_nonce', 'security');
         

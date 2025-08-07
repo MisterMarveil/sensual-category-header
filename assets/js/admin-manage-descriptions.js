@@ -94,9 +94,11 @@ jQuery(document).ready(function($) {
                 }, 300);
             }
         }).fail(function() {
+            // Afficher un message si aucune description n'est trouvée
             $editorLoader.hide();
-            $descriptionEditor.show().val('Erreur lors du chargement de la description');
+            $descriptionEditor.show().val('Aucune description trouvée pour cette catégorie.');
             $editorActions.show();
+            $('#delete-description').hide(); // Cacher le bouton supprimer
         });
     });
     
