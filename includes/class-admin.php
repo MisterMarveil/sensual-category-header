@@ -74,7 +74,7 @@ class SCH_Admin {
         <?php
     }
 
-    public function enqueue_admin_scripts($hook) {
+    public function enqueue_admin_assets($hook) {
     if ($hook === 'sensual-category-header_page_sch-manage-descriptions') {
         wp_enqueue_style(
             'sch-admin-styles',
