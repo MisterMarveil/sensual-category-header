@@ -378,6 +378,7 @@
     border-radius: 12px;
     box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
     border: 1px solid #eee;
+    min-height: 200px;
 }
 
 .sch-product-filters h3 {
@@ -407,4 +408,33 @@
     .sch-product-filters {
         padding: 15px;
     }
+}
+
+.wpfFilterButton.wpfButton, .wpfClearButton.wpfButton {
+    padding: 10px 20px;
+    align-items: right;
+    min-height: 52px;
+    border-radius: 4px;
+    font-size: 17px;
+    text-decoration: none !important;
+    text-align: center;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    white-space: normal;
+    cursor: pointer;
+    border: none;
+    font-weight: bold;
+    outline: none;
+    width: auto;
+    display: inline-flex;
+    position: absolute;
+    top: -71px;
+    right: 0;
+}
+
+#wpfMainWrapper-1_121914 .wpfFilterButtons .wpfButton {
+    overflow: hidden !important;
+    color: #D20985 !important;
+    border-radius: 25px !important;
+    background: #ffffff !important;
 }
